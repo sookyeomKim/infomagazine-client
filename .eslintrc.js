@@ -24,4 +24,12 @@ module.exports = {
       },
     },
   ],
+  // https://stackoverflow.com/questions/50041345/how-i-can-change-eslint-resolve-settings
+  settings: {
+    'import/resolver': {
+      node: {
+        paths: ['node_modules'],
+      },
+    },
+  },
 };
