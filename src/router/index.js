@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import store from '@/store';
 import Home from '@/views/Home.vue';
+import LogIn from '@/views/LogIn.vue';
 
 import middlewarePipeline from './middlewarePipeline';
 import guest from './middleware/guest';
@@ -17,6 +18,16 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home,
+      meta: {
+        middleware: [
+          auth,
+        ],
+      },
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LogIn,
       meta: {
         middleware: [
           guest,

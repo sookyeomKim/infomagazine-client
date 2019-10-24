@@ -48,6 +48,10 @@
 <script>
 export default {
   name: 'AppBar',
+  // TODO drawer 연결
+  data: () => ({
+    drawer: null,
+  }),
 };
 </script>
 

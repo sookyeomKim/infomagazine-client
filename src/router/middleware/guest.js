@@ -1,9 +1,5 @@
 const guest = ({ next, store }) => {
-  if (store.getters['user/state'].loggedIn) {
-    return next({
-      name: 'home',
-    });
-  }
+  store.dispatch('app/layoutTypeSetPlain');
   return next();
 };
 

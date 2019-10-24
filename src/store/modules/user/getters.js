@@ -1,3 +1,3 @@
 export default {
-  state: ({ state }) => state,
+  isLoggedIn: ({ info }) => !!info,
 };
