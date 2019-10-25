@@ -4,16 +4,16 @@ const auth = async ({ next, store: { getters, dispatch } }) => {
   const accessExpireTime = localStorage.getItem('accessExpireTime');
   const remainingExpireTime = accessExpireTime - currentDateTime;
   if (remainingExpireTime <= 0) {
-    return dispatch('user/LogOut');
+    return dispatch('user/logOut');
   }
   if (remainingExpireTime <= 7200000) {
-    await dispatch('user/RefreshToken');
+    await dispatch('user/refreshToken');
   }
   if (!getters['user/isLoggedIn']) {
     try {
-      await dispatch('user/SetUserInfo');
+      await dispatch('user/setUserInfo');
     } catch (e) {
-      return dispatch('user/LogOut');
+      return dispatch('user/logOut');
     }
   }
   dispatch('app/layoutTypeSetDashboard');

@@ -29,10 +29,13 @@
 </template>
 
 <script>
+import {
+  mapMutations,
+} from 'vuex';
+
 export default {
   name: 'Drawer',
   data: () => ({
-    drawer: null,
     items: [
       {
         icon: 'contacts',
@@ -46,6 +49,19 @@ export default {
       },
     ],
   }),
+  computed: {
+    drawer: {
+      get() {
+        return this.$store.getters['app/drawerState'];
+      },
+      set(val) {
+        this.setDrawer(val);
+      },
+    },
+  },
+  methods: {
+    ...mapMutations('app', ['setDrawer']),
+  },
 };
 </script>
 

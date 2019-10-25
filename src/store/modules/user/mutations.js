@@ -1,5 +1,5 @@
 export default {
-  SetUserInfo(state, data) {
+  setUserInfo(state, data) {
     state.info = data;
   },
 };

@@ -9,7 +9,7 @@
       style="width: 300px"
       class="ml-0 pl-4"
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="toggleDrawer"></v-app-bar-nav-icon>
       <span class="hidden-sm-and-down">Google Contacts</span>
     </v-toolbar-title>
     <v-text-field
@@ -46,12 +46,15 @@
 </template>
 
 <script>
+import {
+  mapMutations,
+} from 'vuex';
+
 export default {
   name: 'AppBar',
-  // TODO drawer 연결
-  data: () => ({
-    drawer: null,
-  }),
+  methods: {
+    ...mapMutations('app', ['toggleDrawer']),
+  },
 };
 </script>
 

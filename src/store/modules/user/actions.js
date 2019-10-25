@@ -3,7 +3,7 @@ import Decoder from 'jwt-decode';
 import $router from '@/router';
 
 export default {
-  async LogIn({ dispatch, rootGetters }, payload) {
+  async logIn({ dispatch, rootGetters }, payload) {
     let tokenSet;
     try {
       const obtainTokenUrl = rootGetters.getUrl('obtainTokenUrl');
@@ -12,21 +12,21 @@ export default {
     } catch (e) {
       throw e.response;
     }
-    await dispatch('SetAuthInfoToLS', tokenSet);
+    await dispatch('setAuthInfoToLS', tokenSet);
     $router.push('/');
   },
-  async LogOut({ commit, rootGetters }) {
+  async logOut({ commit, rootGetters }) {
     try {
       const deleteTokenUrl = rootGetters.getUrl('deleteTokenUrl');
       await Vue.axios.post(deleteTokenUrl);
     } catch (e) {
       console.log('Failed to delete token.');
     }
-    commit('SetUserInfo', null);
+    commit('setUserInfo', null);
     localStorage.clear();
     $router.push('/login');
   },
-  SetAuthInfoToLS(context, { access, refresh }) {
+  setAuthInfoToLS(context, { access, refresh }) {
     const decodedAccessToken = Decoder(access);
     const accessExpireTime = decodedAccessToken.exp * 1000;
     localStorage.setItem('accessExpireTime', accessExpireTime);
@@ -36,18 +36,18 @@ export default {
       localStorage.setItem('refreshExpireTime', refreshExpireTime);
     }
   },
-  async SetUserInfo({ commit, dispatch, rootGetters }) {
+  async setUserInfo({ commit, dispatch, rootGetters }) {
     const getUserInfoUrl = rootGetters.getUrl('getAuthInfoUrl');
     try {
       const { data: response } = await Vue.axios.get(getUserInfoUrl);
-      commit('SetUserInfo', response);
-      await dispatch('BackgroundRefreshToken');
+      commit('setUserInfo', response);
+      await dispatch('backgroundRefreshToken');
       return response;
     } catch (e) {
       throw e.response;
     }
   },
-  async RefreshToken({ dispatch, rootGetters }) {
+  async refreshToken({ dispatch, rootGetters }) {
     let tokenSet;
     try {
       const refreshTokenUrl = rootGetters.getUrl('refreshTokenUrl');
@@ -56,9 +56,9 @@ export default {
     } catch (e) {
       throw e.response;
     }
-    await dispatch('SetAuthInfoToLS', tokenSet);
+    await dispatch('setAuthInfoToLS', tokenSet);
   },
-  BackgroundRefreshToken({ dispatch }) {
+  backgroundRefreshToken({ dispatch }) {
     const setAsyncTimeout = (cb, timeout = 0) => new Promise((resolve) => {
       const timeOut = setTimeout(() => {
         cb();
@@ -69,11 +69,11 @@ export default {
 
     const callBack = async () => {
       try {
-        await dispatch('RefreshToken');
-        await dispatch('BackgroundRefreshToken');
+        await dispatch('refreshToken');
+        await dispatch('backgroundRefreshToken');
       } catch ({ status }) {
         console.log('Failed to refresh token.');
-        await dispatch('LogOut');
+        await dispatch('logOut');
       }
     };
     setAsyncTimeout(callBack, 14400000);
